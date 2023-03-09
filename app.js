@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false }))
 
 
 app.use('/', authRouter);
-app.use("/articles", articleRouter)
+app.use("/articles", passport.authenticate('jwt', { session: false }), articleRouter)
 
 
 
