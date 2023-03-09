@@ -28,7 +28,7 @@ db.Sequelize = Sequelize
 
 //Add models
 
-db.users= require('./users')(sequelize, DataTypes);
+db.users = require('./users')(sequelize, DataTypes);
 db.articles = require('./articles')(sequelize, DataTypes);
 db.comments = require('./comments')(sequelize, DataTypes);
 
