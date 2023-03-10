@@ -1,13 +1,20 @@
 
 const {Model} = require('sequelize');
+const Article = require('./articles')
 
 
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
         static associate({Article}) {
-            this.hasMany(Article, {foreignKey: 'userId', as: 'articles'});
-            this.hasMany(Comment, {foreignKey: 'userId', as: 'comments'})
+            this.hasMany(Article, {
+                foreignKey: {
+                    type: DataTypes.INTEGER,
+                    allowNull: false
+                }
+            });
+            
         }
+    
     };
 
     User.init({
@@ -38,6 +45,8 @@ module.exports = (sequelize, DataTypes) => {
 
 
     return User;
+
+    // Article.belongsToOne(User);
 };
 
 

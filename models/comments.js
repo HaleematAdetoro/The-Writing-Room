@@ -2,11 +2,10 @@ const {Model} = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
     class Comment extends Model {
-        static associate ({Article,}) {
-            this.belongsTo(User, {foreignKey: 'userId', as: 'users'})
-            this.belongsTo(Article, {
+        static associate ({Article}) {
+            Comment.belongsTo(Article, {
                 onDelete: "CASCADE",
-                foreignKey: 'articleId', as: 'articles'})
+            })
         }
     };
 
@@ -34,7 +33,14 @@ module.exports = (sequelize, DataTypes) => {
         tableName: 'comments',
         modelName: 'Comment',
     });
+
     return Comment;
+    // Article.hasMany(Comment, {
+    //     onDelete: "CASCADE"
+    // })
+    // // Comment.belongsTo(Article, {
+    //     onDelete: "CASCADE",
+    // })
 }
 
 

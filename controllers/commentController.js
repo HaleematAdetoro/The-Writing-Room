@@ -9,12 +9,13 @@ async function getAllCommentsByArticle(req, res) {
     const { articleID } = req.body
     try{
         const article = await Article.findOne({
-            where: {id: articleID}
+            where: {id: articleID},
+            
         })
         const comments = await Comment.findAll({
             where: { 
-                articleId: article.id,
-            }
+                articleId: articleID,
+            },
         });
         res.status(200).json(comments)
     } catch (error) {
@@ -50,13 +51,13 @@ async function deleteCommentById(req, res) {
 async function createComment(req, res) {
     const { content, articleID, userID } = req.body;
     try {
-        const user = await User.findOne({
-            where: {id: userID}
-        })
-        const article = await Article.findOne({
-            where: {id: articleID}
-        })
-        const comment = await Comment.create({ content, articleId: article.id, userId: user.id})
+        // const user = await User.findOne({
+        //     where: {id: userID}
+        // })
+        // const article = await Article.findOne({
+        //     where: {id: articleID}
+        // })
+        const comment = await Comment.create({ content, articleId: articleID, userId: userID})
         res.status(200).json({
             message: "comment created successfully",
             data: comment

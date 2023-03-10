@@ -1,4 +1,4 @@
-const { sequelize } = require('../models');
+const { sequelize } = require('sequelize');
 const db = require('../models')
 
 const Article = db.articles;
@@ -9,6 +9,7 @@ const Comment = db.comments;
 async function getAllArticles(req, res) {
     try{
         const articles = await Article.findAll({
+            include: ['users'],
             order: [["createdAt", "DESC"]],
         });
         res.status(200).json(articles)

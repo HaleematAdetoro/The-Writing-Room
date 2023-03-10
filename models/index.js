@@ -33,10 +33,16 @@ db.articles = require('./articles')(sequelize, DataTypes);
 db.comments = require('./comments')(sequelize, DataTypes);
 
 // Object.keys(db).forEach(function(modelName) {
-//     if ('associate' in db[modelName]) {
+//     if ('associate' db[modelName]) {
 //       db[modelName].associate(db);
 //     }
 //   });
+
+// Object.keys(db).forEach(modelName => {
+//   if (db[modelName].associate) {
+//     db[modelName].associate(db);
+//   }
+// });
 
 db.sequelize.sync({ force: false})
     .then(() => {

@@ -3,9 +3,15 @@ const {Model} = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
     class Article extends Model {
+      
         static associate({Comment}) {
-            this.belongsTo(User, {foreignKey: 'userId', as: 'users'})
-            this.hasMany(Comment, {foreignKey: 'articleId', as: 'comments'})
+            this.belongsTo(User)
+            this.hasMany(Comment, {
+                foreignKey: {
+                    type: DataTypes.INTEGER,
+                    allowNull: false
+                }
+            })
         }
     };
 
@@ -34,6 +40,16 @@ module.exports = (sequelize, DataTypes) => {
         modelName: 'Article',
     });
         return Article;
+
+    // User.hasMany(Article)
+    // Comment.belongsToOne(Article)
+    // Article.belongsTo(User)
+    // Article.hasMany(Comment, {
+    //     foreignKey: {
+    //         type: DataTypes.INTEGER,
+    //         allowNull: false
+    //     }
+    // })    
 };  
 
 
