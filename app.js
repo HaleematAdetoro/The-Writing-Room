@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const authRouter = require('./routes/authRoute')
 const articleRouter = require('./routes/articleRoute');
+const commentRouter = require('./routes/commentRoute')
 
 require('dotenv').config();
 
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use('/', authRouter);
 app.use("/articles", passport.authenticate('jwt', { session: false }), articleRouter)
+app.use("/comments", passport.authenticate('jwt', { session: false }), commentRouter)
 
 
 
