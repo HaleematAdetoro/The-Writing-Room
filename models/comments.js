@@ -1,11 +1,12 @@
-const { Model } = require('sequelize');
-
+const {Model} = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
     class Comment extends Model {
-        static associate ({Article}) {
+        static associate ({Article,}) {
             this.belongsTo(User, {foreignKey: 'userId', as: 'users'})
-            this.belongsTo(Article, {foreignKey: 'articleId', as: 'articles'})
+            this.belongsTo(Article, {
+                onDelete: "CASCADE",
+                foreignKey: 'articleId', as: 'articles'})
         }
     };
 
@@ -23,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        comment: {
+        content: {
             type: DataTypes.STRING,
             allowNull: false
         }

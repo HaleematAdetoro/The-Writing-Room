@@ -1,4 +1,5 @@
-const { Model } = require('sequelize');
+
+const {Model} = require('sequelize');
 
 
 module.exports = (sequelize, DataTypes) => {
@@ -8,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
             this.hasMany(Comment, {foreignKey: 'userId', as: 'comments'})
         }
     };
+
     User.init({
         id: {
             type: DataTypes.INTEGER,
@@ -33,6 +35,8 @@ module.exports = (sequelize, DataTypes) => {
         tableName: 'users',
         modelName: 'User'
     });
+
+
     return User;
 };
 

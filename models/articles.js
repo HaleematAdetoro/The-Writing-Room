@@ -1,9 +1,10 @@
-const { Model } = require('sequelize');
+const {Model} = require('sequelize')
+
 
 module.exports = (sequelize, DataTypes) => {
     class Article extends Model {
         static associate({Comment}) {
-            this.belongsTo(User, {foreignKey: 'userID', as: 'users'})
+            this.belongsTo(User, {foreignKey: 'userId', as: 'users'})
             this.hasMany(Comment, {foreignKey: 'articleId', as: 'comments'})
         }
     };
@@ -25,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         body: {
             type: DataTypes.STRING,
             allowNull: false
-        }
+        },
     },
     {
         sequelize,

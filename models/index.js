@@ -32,6 +32,12 @@ db.users = require('./users')(sequelize, DataTypes);
 db.articles = require('./articles')(sequelize, DataTypes);
 db.comments = require('./comments')(sequelize, DataTypes);
 
+// Object.keys(db).forEach(function(modelName) {
+//     if ('associate' in db[modelName]) {
+//       db[modelName].associate(db);
+//     }
+//   });
+
 db.sequelize.sync({ force: false})
     .then(() => {
         console.log('Database and tables synced');
