@@ -3,6 +3,7 @@ const db = require('../models')
 
 const Article = db.articles;
 const User = db.users;
+const Comment = db.comments;
 
 
 async function getAllArticles(req, res) {
@@ -28,12 +29,13 @@ async function getArticleById(req,res) {
 }
 
 async function createArticle(req, res) {
+   
     const { title, body, userID } = req.body;
     try {
         const user = await User.findOne({
             where: {id: userID}
         })
-        const article = await Article.create({ title, body, userId: user.id })
+        const article = await Article.create({ title, body, userId: user.id  })
         res.status(200).json({
             message: "Article created successfully",
             data: article
@@ -45,8 +47,8 @@ async function createArticle(req, res) {
 }
 
 async function updateArticleById(req, res) {
-    const userID = req.params.id;
-    const articleInfo = req.body;
+   
+    const {articleInfo, userID} = req.body;
     try {
         const article = await Article.findOne({
             where: {id: req.params.id, userId: userID}
@@ -70,7 +72,7 @@ async function updateArticleById(req, res) {
 
 
 async function deleteArticleById(req, res) {
-    const userID = req.params.id;
+    const {userID} = req.body;
     try {
         const article = await Article.findOne({
             where: {id: req.params.id, userId: userID} 
