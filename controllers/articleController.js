@@ -1,14 +1,15 @@
-const { sequelize } = require('../models');
-const db = require('../models')
 
-const Article = db.articles;
-const User = db.users;
-const Comment = db.comments;
+const db = require('../models/index')
+
+const Article = db.sequelize.models.Article;
+const User = db.sequelize.models.User;
+const Comment = db.sequelize.models.Comment;
 
 
 async function getAllArticles(req, res) {
     try{
         const articles = await Article.findAll({
+            include: [Comment],
             order: [["createdAt", "DESC"]],
         });
         res.status(200).json(articles)
@@ -32,10 +33,7 @@ async function createArticle(req, res) {
    
     const { title, body, userID } = req.body;
     try {
-        const user = await User.findOne({
-            where: {id: userID}
-        })
-        const article = await Article.create({ title, body, userId: user.id  })
+        const article = await Article.create({ title, body, UserId: userID  })
         res.status(200).json({
             message: "Article created successfully",
             data: article
@@ -51,7 +49,7 @@ async function updateArticleById(req, res) {
     const {articleInfo, userID} = req.body;
     try {
         const article = await Article.findOne({
-            where: {id: req.params.id, userId: userID}
+            where: {id: req.params.id, UserId: userID}
         });
         if (article) {
             await article.update(articleInfo);
@@ -75,7 +73,7 @@ async function deleteArticleById(req, res) {
     const {userID} = req.body;
     try {
         const article = await Article.findOne({
-            where: {id: req.params.id, userId: userID} 
+            where: {id: req.params.id, UserId: userID} 
         })
         if (article) {
             await article.destroy();

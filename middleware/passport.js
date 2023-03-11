@@ -1,8 +1,9 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
+
+const db = require('../models/index');
 const localStrategy = require('passport-local').Strategy;
-const db = require('../models')
-const User = db.users;
+const User = db.sequelize.models.User
 require('dotenv').config();
 
 const JWTstrategy = require('passport-jwt').Strategy;
@@ -12,8 +13,8 @@ passport.use(
     new JWTstrategy(
         {
             secretOrKey: process.env.JWT_SECRET || 'something_secret',
-            jwtFromRequest: ExtractJWT.fromUrlQueryParameter('secret_token')
-            // jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken() // Use this if you are using Bearer token
+            // jwtFromRequest: ExtractJWT.fromUrlQueryParameter('secret_token')
+            jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken() // Use this if you are using Bearer token
         },
         async (token, done) => {
             try {
@@ -37,15 +38,16 @@ passport.use(
     new localStrategy(
         {
             usernameField: 'email',
-            passwordField: 'password'
+            passwordField: 'password',
+           
         },
         async (email, password, done) => {
             try {
+               
                 const user = await User.create({ email, password });
 
                 return done(null, user, { message: 'User created successfully'});
             } catch (error) {
-                console.log(error)
                 done(error);
             }
         }
@@ -61,9 +63,9 @@ passport.use(
         {
             usernameField: 'email',
             passwordField: 'password',
-            passReqToCallback: true
+           
         },
-        async (req, email, password, done) => {
+        async ( email, password, done) => {
             try {
                 const user = await User.findOne({ email });
 

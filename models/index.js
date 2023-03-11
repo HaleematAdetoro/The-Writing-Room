@@ -2,7 +2,6 @@ const dbConfig = require('../config/dbConfig');
 const { Sequelize, DataTypes } = require('sequelize');
 
 
-
 const sequelize = new Sequelize(
     dbConfig.DB_NAME,
     dbConfig.DB_USER,
@@ -27,16 +26,10 @@ db.sequelize = sequelize
 db.Sequelize = Sequelize
 
 //Add models
+db.models = require('./models')(sequelize)
 
-db.users = require('./users')(sequelize, DataTypes);
-db.articles = require('./articles')(sequelize, DataTypes);
-db.comments = require('./comments')(sequelize, DataTypes);
 
-// Object.keys(db).forEach(function(modelName) {
-//     if ('associate' in db[modelName]) {
-//       db[modelName].associate(db);
-//     }
-//   });
+
 
 db.sequelize.sync({ force: false})
     .then(() => {
@@ -47,4 +40,4 @@ db.sequelize.sync({ force: false})
 
 
 
-module.exports = db
+module.exports = db;
