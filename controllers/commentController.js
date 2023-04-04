@@ -1,21 +1,20 @@
-const { sequelize } = require('../models');
-const db = require('../models')
 
-const Article = db.articles;
-const User = db.users;
-const Comment = db.comments;
+const db = require('../models/index')
+
+const Article = db.sequelize.models.Article;
+const User = db.sequelize.models.User;
+const Comment = db.sequelize.models.Comment;
 
 async function getAllCommentsByArticle(req, res) {
     const { articleID } = req.body
     try{
         const article = await Article.findOne({
-            where: {id: articleID},
-            
+            where: {id: articleID}
         })
         const comments = await Comment.findAll({
             where: { 
-                articleId: articleID,
-            },
+                articleId: article.id,
+            }
         });
         res.status(200).json(comments)
     } catch (error) {
@@ -29,7 +28,7 @@ async function deleteCommentById(req, res) {
     const {userID} = req.body;
     try {
         const comment = await Comment.findOne({
-            where: {id: req.params.id, userId: userID} 
+            where: {id: req.params.id, UserId: userID} 
         })
         if (comment) {
             await comment.destroy();
@@ -51,13 +50,13 @@ async function deleteCommentById(req, res) {
 async function createComment(req, res) {
     const { content, articleID, userID } = req.body;
     try {
-        // const user = await User.findOne({
-        //     where: {id: userID}
-        // })
-        // const article = await Article.findOne({
-        //     where: {id: articleID}
-        // })
-        const comment = await Comment.create({ content, articleId: articleID, userId: userID})
+        const user = await User.findOne({
+            where: {id: userID}
+        })
+        const article = await Article.findOne({
+            where: {id: articleID}
+        })
+        const comment = await Comment.create({ content, articleId: article.id, userId: user.id})
         res.status(200).json({
             message: "comment created successfully",
             data: comment
@@ -74,7 +73,7 @@ async function updateCommentById(req, res) {
     const {userID, commentInfo} = req.body;
     try {
         const comment = await Comment.findOne({
-            where: {id: req.params.id, userId: userID}
+            where: {id: req.params.id, UserId: userID}
         });
         if (comment) {
             await comment.update(commentInfo);
