@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const db = require('../models')
+// const User = db.sequelize.models.User;
 
 
 const bcrypt = require('bcrypt');

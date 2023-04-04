@@ -9,6 +9,7 @@ const Comment = db.sequelize.models.Comment;
 async function getAllArticles(req, res) {
     try{
         const articles = await Article.findAll({
+            include: [Comment],
             order: [["createdAt", "DESC"]],
         });
         res.status(200).json(articles)

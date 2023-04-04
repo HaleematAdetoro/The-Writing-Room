@@ -8,12 +8,9 @@ const Comment = db.sequelize.models.Comment;
 async function getAllCommentsByArticle(req, res) {
     const { articleID } = req.body
     try{
-        const article = await Article.findOne({
-            where: {id: articleID}
-        })
         const comments = await Comment.findAll({
             where: { 
-                articleId: article.id,
+                ArticleId: articleID,
             }
         });
         res.status(200).json(comments)
@@ -21,8 +18,8 @@ async function getAllCommentsByArticle(req, res) {
         console.log(error)
         res.status(500).send(error)
     }
-}
 
+}
 
 async function deleteCommentById(req, res) {
     const {userID} = req.body;
@@ -50,13 +47,7 @@ async function deleteCommentById(req, res) {
 async function createComment(req, res) {
     const { content, articleID, userID } = req.body;
     try {
-        const user = await User.findOne({
-            where: {id: userID}
-        })
-        const article = await Article.findOne({
-            where: {id: articleID}
-        })
-        const comment = await Comment.create({ content, articleId: article.id, userId: user.id})
+        const comment = await Comment.create({ content, ArticleId: articleID, UserId: userID})
         res.status(200).json({
             message: "comment created successfully",
             data: comment

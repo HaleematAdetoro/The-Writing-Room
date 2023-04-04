@@ -28,21 +28,9 @@ db.Sequelize = Sequelize
 
 //Add models
 
-db.users = require('./users')(sequelize, DataTypes);
-db.articles = require('./articles')(sequelize, DataTypes);
-db.comments = require('./comments')(sequelize, DataTypes);
+db.models = require('./models')(sequelize)
 
-// Object.keys(db).forEach(function(modelName) {
-//     if ('associate' db[modelName]) {
-//       db[modelName].associate(db);
-//     }
-//   });
 
-// Object.keys(db).forEach(modelName => {
-//   if (db[modelName].associate) {
-//     db[modelName].associate(db);
-//   }
-// });
 
 db.sequelize.sync({ force: false})
     .then(() => {

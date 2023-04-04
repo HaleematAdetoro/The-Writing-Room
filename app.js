@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Writing Room')
 });
 
-app.use((error, reg, res, next) => {
+app.use((error, req, res, next) => {
     console.log(error);
     res.status(500).json({
         error: error.message
